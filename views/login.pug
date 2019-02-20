@@ -1,0 +1,9 @@
+extends layout
+
+block content
+	h1 #{title}
+	p= errorMessage
+	form(method='post')
+		input(name='email')
+		input(name='password' type='password')
+		button(submit='submit') save
