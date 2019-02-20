@@ -1,9 +1,17 @@
 extends layout
 
 block content
-	h1 #{title}
-	p= errorMessage
-	form(method='post')
-		input(name='email')
-		input(name='password' type='password')
-		button(submit='submit') save
+	section.wrapper.small
+		h1 #{title}
+		if errorMessage
+			div.alert.danger= errorMessage
+		form(method='post')
+			div.row
+				p.small E-Mail
+				input(name='email')
+			
+			div.row
+				p.small Passwort
+				input(name='password' type='password')
+				
+			button(submit='submit') Anmelden

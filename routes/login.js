@@ -5,8 +5,6 @@ var User = require('../models/User');
 /* GET users listing. */
 router.get('/', function(req, res, next) {
 	// go next, if already logged in
-	console.log("test");
-	console.log(req.session.user);
 	if (req.session.user) {
 		res.redirect('/');
 	}
@@ -17,7 +15,6 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
 	User.findByMail(req.body.email, function(error, user) {
 		if (!error && user.comparePassword(req.body.password)) {
-			// req.user = user;
 			req.session.user = user;
 				
 			res.redirect('../');
@@ -25,10 +22,6 @@ router.post('/', function(req, res, next) {
 		
 		res.render('login', { title: 'Login', errorMessage: 'Fehler' });
 	});
-
-	
-	
-	
 });
 
 module.exports = router;
