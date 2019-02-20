@@ -1,11 +1,23 @@
 doctype html
 html
 	head
-		title= title
+		title #{title} | #{pageTitle}
 		link(rel='stylesheet', href='/stylesheets/style.css')
 	body
-	
-		nav
-			a(href='/logout') Logout
-	
-		block content
+		header
+			div.wrapper
+				div#page-title= pageTitle
+				nav
+					ul
+						for address, label in navigationPoints
+							li 
+								if title == label
+									a(href=address).active= label
+								else 
+									a(href=address)= label
+							
+				div(class='clear')
+		#header-border
+			
+		main
+			block content

@@ -5,22 +5,32 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('client-sessions');
 
-var indexRouter = require('./routes/index');
+// routers
 var loginRouter = require('./routes/login');
 var logoutRouter = require('./routes/logout');
-var usersRouter = require('./routes/users');
-
-var User = require('./models/User');
+var indexRouter = require('./routes/index');
+var lessonsRouter = require('./routes/lessons');
+var learnRouter = require('./routes/learn');
 
 var app = express();
-
-
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// define some basic information
+app.locals.pageTitle = 'Chinese Vocabulary';
+app.locals.navigationPoints = {
+	'Lektionen': '/lessons',
+	'Lernen': '/learn',
+	'Abmelden': '/logout'
+};
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
 	cookieName: 'session',
 	secret: 'ase8flLSe39slPes',
@@ -31,27 +41,21 @@ app.use(session({
 	ephemeral: true
 }));
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/login', loginRouter);
-app.use('/logout', logoutRouter);
-
 // if the user is not logged in redirect to login
 function requireLogin(req, res, next) {
 	console.log(req.session.user);
 	if (!req.session.user) {
 		res.redirect('/login');
 	} else {
-		next()
+		next();
 	}
 };
 
+app.use('/login', loginRouter);
+app.use('/logout', logoutRouter);
 app.use('/', requireLogin, indexRouter);
-app.use('/users', requireLogin, usersRouter);
+app.use('/lessons', requireLogin, lessonsRouter);
+app.use('/learn', requireLogin, learnRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
