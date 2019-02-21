@@ -2,9 +2,8 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/User');
 
-/* GET users listing. */
 router.get('/', function(req, res, next) {
-	// go next, if already logged in
+	// redirect to home, if already logged in
 	if (req.session.user) {
 		res.redirect('/');
 	}

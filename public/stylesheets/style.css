@@ -18,11 +18,15 @@ p.small {
 	margin: 0px 0px 2px;
 }
 
+.small-margin-left {
+	margin-left: 6px;
+}
+
 div.row {
 	margin-bottom: 16px;
 }
 
-button {
+button, a.button {
 	display: block;
 	background-color: #D00000;
 	border-radius: 3px;
@@ -31,9 +35,19 @@ button {
 	border: 0px;
 	color: #fff;
 	cursor: pointer;
+	text-decoration: none;
 }
 
-button:hover {
+button.small, a.button.small {
+	padding: 6px;
+	font-size: 12px;
+}
+
+a.button {
+	display: inline-block;
+}
+
+button:hover, a.button:hover {
 	background-color: #ba0000;
 }
 
@@ -138,11 +152,46 @@ section {
 	border: 1px solid rgba(0, 0, 0, 0.075);
 }
 
-h1 {
+h1, h2 {
 	margin-top: 0px;
 	margin-bottom: 16px;
+	font-weight: 500;
+}
+
+h1 {
+	font-size: 24px;
+}
+
+h2 {
+	font-size: 20px;
 }
 
 p:last-child {
 	margin-bottom: 0px;
+}
+
+
+
+/* TABLE */
+
+table {
+	width: 100%;
+	margin-bottom: 16px;
+}
+
+tr {
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+}
+
+th {
+}
+
+td, th {
+	padding: 0px;
+}
+
+table.col-3 td, table.col-3 th {
+	width: 33.33%;
 }

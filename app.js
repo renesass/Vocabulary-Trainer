@@ -43,7 +43,6 @@ app.use(session({
 
 // if the user is not logged in redirect to login
 function requireLogin(req, res, next) {
-	console.log(req.session.user);
 	if (!req.session.user) {
 		res.redirect('/login');
 	} else {
