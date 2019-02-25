@@ -5,4 +5,55 @@ block content
 		h1= title
 			span
 				a(href='/lessons/new').button.small.small-margin-left Neue Lektion
-		p Welcome to #{title}
+		
+		each lesson in lessons
+			h2= lesson.name
+				span
+					a(href='/lessons/edit/' + lesson.id).small-margin-left ändern
+					a(href='/lessons/delete/' + lesson.id).small-margin-left löschen
+			
+			table.col-3.with-border
+				each vocabulary in lesson.vocabularies
+					tr
+						td= vocabulary.foreign
+						td= vocabulary.pronunciation
+						td= vocabulary.native
+						td
+							div.actions-container
+								input(type="hidden", class="vocabulary_id", value=vocabulary.id)
+								div.actions
+									if vocabulary.foreign_to_native_status == 0
+										button.action.set-status.set-0.foreign-native.active
+									else 
+										button.action.set-status.set-0.foreign-native
+									
+									if vocabulary.foreign_to_native_status == 1
+										button.action.set-status.set-1.foreign-native.active
+									else 
+										button.action.set-status.set-1.foreign-native
+									
+									if vocabulary.foreign_to_native_mark == 1
+										button.action.toggle-mark.foreign-native.active
+									else 
+										button.action.toggle-mark.foreign-native
+								
+								div.actions
+									if vocabulary.native_to_foreign_status == 0
+										button.action.set-status.set-0.native-foreign.active
+									else 
+										button.action.set-status.set-0.native-foreign
+									
+									if vocabulary.native_to_foreign_status == 1
+										button.action.set-status.set-1.native-foreign.active
+									else 
+										button.action.set-status.set-1.native-foreign
+									
+									if vocabulary.native_to_foreign_mark == 1
+										button.action.toggle-mark.native-foreign.active
+									else 
+										button.action.toggle-mark.native-foreign
+			
+			
+			
+	script(src="https://code.jquery.com/jquery-3.3.1.min.js")
+	script(src="../javascripts/lessons.js")

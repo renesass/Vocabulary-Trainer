@@ -1,9 +1,15 @@
 $(document).ready(function() {
-	addRow();
+	if ($('table#vocabularies tr').length == 1) {
+		addRow();
+	}
 	
 	$('.add-row').on('click', function() {
 		addRow();
-	});
+	}); 
+});
+
+$(document).on('click','.remove-row',function(){
+	removeRow($('.remove-row').index(this) + 1);
 });
 
 function addRow() {
@@ -11,21 +17,25 @@ function addRow() {
 	let index = $('table#vocabularies tr').length - 1;
 		
 		
-	var zh = "<td><input name='zh[]'></td>";
-	var pinyin = "<td><input name='pinyin[]'></td>";
-	var de = "<td><input name='de[]'></td>";
-	var button = "<td><button>x</button></td>";
+	var foreign = "<td class='no-padding'><input type='hidden' name='id[]'><input name='foreign[]'></td>";
+	var pronunciation = "<td class='no-padding'><input name='pronunciation[]'></td>";
+	var native = "<td class='no-padding'><input name='native[]'></td>";
+	var button = "<td class='no-padding'><button class='remove-row small-margin-left'>x</button></td>";
 		
 	var row = "<tr>";
-	row += zh;
-	row += pinyin;
-	row += de;
+	row += foreign;
+	row += pronunciation;
+	row += native;
 	row += button;
 	row += "</tr>";
 		
 	table.append(row);
 }
 
-function removeRow() {
-	var table = $('table#vocabularies tbody');
+function removeRow(index) {
+	var table = $('table#vocabularies tbody').children().eq(index).remove();
+	
+	if ($('table#vocabularies tr').length == 1) {
+		addRow();
+	}
 }

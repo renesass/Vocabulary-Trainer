@@ -1,0 +1,49 @@
+extends ../layout
+
+block content
+	section.wrapper
+		h1= title
+		if error
+			div.alert.danger= error
+		form(method="post")
+			div.row
+				p.small Name
+				if lesson
+					input(name="name", value=lesson.name)
+				else
+					input(name="name")
+			
+			h2 Vokabeln
+			table.col-3#vocabularies
+				tr
+					th Fremdsprache
+					th Aussprache
+					th Muttersprache
+					th
+			
+				if lesson
+					for vocabulary in lesson.vocabularies
+						tr
+							td.no-padding
+								input(name="id[]", type="hidden", value=vocabulary.id) 
+								input(name="foreign[]", value=vocabulary.foreign) 
+							td.no-padding
+								input(name="pronunciation[]", value=vocabulary.pronunciation) 
+							td.no-padding
+								input(name="native[]", value=vocabulary.native) 
+							td.no-padding
+								button.remove-row.small-margin-left x
+			
+			div.row
+				a.add-row Zeile hinzufügen
+			button(submit="submit") Speichern
+	
+
+			
+	
+	script(src="https://code.jquery.com/jquery-3.3.1.min.js")
+	
+	if lesson
+		script(src="../../javascripts/vocabularies.js")
+	else
+		script(src="../javascripts/vocabularies.js")

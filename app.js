@@ -10,6 +10,7 @@ var loginRouter = require('./routes/login');
 var logoutRouter = require('./routes/logout');
 var indexRouter = require('./routes/index');
 var lessonsRouter = require('./routes/lessons');
+var vocabulariesRouter = require('./routes/vocabularies');
 var learnRouter = require('./routes/learn');
 
 var app = express();
@@ -54,6 +55,7 @@ app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/', requireLogin, indexRouter);
 app.use('/lessons', requireLogin, lessonsRouter);
+app.use('/vocabularies', requireLogin, vocabulariesRouter);
 app.use('/learn', requireLogin, learnRouter);
 
 // catch 404 and forward to error handler

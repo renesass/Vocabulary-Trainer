@@ -8,6 +8,7 @@ body {
 
 a {
 	color: #D00000;
+	cursor: pointer;
 }
 
 p {
@@ -15,11 +16,27 @@ p {
 }
 
 p.small {
-	margin: 0px 0px 2px;
+	margin: 0px 0px 6px;
+}
+
+hr {
+	padding: 0px;
+	margin: 16px 0px;
+	border: none;
+	border-bottom: 1px solid #dddddd;
+}
+
+hr:last-child {
+	border: none;
+	margin: 0px;
+}
+
+.float-left {
+	float: left;
 }
 
 .small-margin-left {
-	margin-left: 6px;
+	margin-left: 6px !important;
 }
 
 div.row {
@@ -31,6 +48,7 @@ button, a.button {
 	background-color: #D00000;
 	border-radius: 3px;
 	padding: 12px;
+	margin: 0px;
 	font-size: 14px;
 	border: 0px;
 	color: #fff;
@@ -54,6 +72,7 @@ button:hover, a.button:hover {
 input {
 	border-radius: 3px;
 	padding: 12px;
+	margin: 0px;
 	width: 100%;
 	box-sizing: border-box;
 	border: 1px solid #ddd;
@@ -158,11 +177,16 @@ h1, h2 {
 	font-weight: 500;
 }
 
+h1 span, h2 span {
+	font-size: 12px;
+}
+
 h1 {
 	font-size: 24px;
 }
 
 h2 {
+	margin-top: 24px;
 	font-size: 20px;
 }
 
@@ -177,6 +201,11 @@ p:last-child {
 table {
 	width: 100%;
 	margin-bottom: 16px;
+	border-collapse: collapse;
+}
+
+table:last-child {
+	margin-bottom: 0px;
 }
 
 tr {
@@ -189,9 +218,67 @@ th {
 }
 
 td, th {
+	padding: 8px;
+	white-space: nowrap;
+}
+
+td.no-padding, th.no-padding {
 	padding: 0px;
+}
+
+table.with-border td {
+	border: 1px solid #ccc;
 }
 
 table.col-3 td, table.col-3 th {
 	width: 33.33%;
+}
+
+/* STATUS ACTIONS */
+
+.actions-container {
+	width: 126px;
+}
+
+.actions {
+	float: left;
+	width: 60px;
+}
+
+.actions:last-child {
+	margin-left: 6px;
+}
+
+.actions .action {
+	float: left;
+	padding: 0px;
+	width: 20px;
+	height: 20px;
+	background-color: transparent;
+	background-size: 8px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	opacity: 0.2;
+}
+
+.actions .set-status.set-0 { background-color: #f42424; background-image: url('../images/icons/close.png'); }
+.actions .set-status.set-1 { background-color: #2bce2d; background-image: url('../images/icons/tick.png'); }
+.actions .toggle-mark { background-color: #edaf1b; background-image: url('../images/icons/warning.png'); }
+
+.actions .action.active {
+	opacity: 1;
+}
+
+.actions .set-status.set-0 {
+	border-radius: 3px 0px 0px 3px !important;
+}
+
+.actions .set-status.set-1 {
+	border-radius: 0px !important;
+	border-top: none;
+	border-bottom: none;
+}
+
+.actions .toggle-mark {
+	border-radius: 0px 3px 3px 0px !important;
 }

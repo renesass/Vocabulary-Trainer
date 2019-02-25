@@ -25,9 +25,7 @@ class User extends Model {
 	
 	static findByMail(mail, callback) {
 		this.db.query("SELECT * FROM users WHERE mail = ?", [mail], function (error, result) {
-		    if (error || result.length != 1) {
-			    return callback(true, null);
-			}
+		    if (error || result.length != 1) return callback(true, null);
 		    
 		    var user = new User(result[0].id, result[0].mail, result[0].password);
 		    return callback(false, user);    
