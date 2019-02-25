@@ -83,6 +83,11 @@ input:focus, input:hover {
 	border: 1px solid #ccc;
 }
 
+input[type="checkbox"], input[type="radio"] {
+	width: auto;
+	margin-right: 6px;
+}
+
 
 
 .alert {
@@ -171,6 +176,11 @@ section {
 	border: 1px solid rgba(0, 0, 0, 0.075);
 }
 
+section.no-bg {
+	background: none;
+	border: none;
+}
+
 h1, h2 {
 	margin-top: 0px;
 	margin-bottom: 16px;
@@ -234,22 +244,23 @@ table.col-3 td, table.col-3 th {
 	width: 33.33%;
 }
 
-/* STATUS ACTIONS */
 
-.actions-container {
+/* ACTIONS IN LESSONS */
+
+.lesson-actions-container {
 	width: 126px;
 }
 
-.actions {
+.lesson-actions-container .actions {
 	float: left;
 	width: 60px;
 }
 
-.actions:last-child {
+.lesson-actions-container .actions:last-child {
 	margin-left: 6px;
 }
 
-.actions .action {
+.lesson-actions-container .action {
 	float: left;
 	padding: 0px;
 	width: 20px;
@@ -261,24 +272,160 @@ table.col-3 td, table.col-3 th {
 	opacity: 0.2;
 }
 
-.actions .set-status.set-0 { background-color: #f42424; background-image: url('../images/icons/close.png'); }
-.actions .set-status.set-1 { background-color: #2bce2d; background-image: url('../images/icons/tick.png'); }
-.actions .toggle-mark { background-color: #edaf1b; background-image: url('../images/icons/warning.png'); }
+.lesson-actions-container .action.set-status.set-0 { background-color: #f42424; background-image: url('../images/icons/close.png'); }
+.lesson-actions-container .action.set-status.set-1 { background-color: #2bce2d; background-image: url('../images/icons/tick.png'); }
+.lesson-actions-container .action.toggle-mark { background-color: #edaf1b; background-image: url('../images/icons/warning.png'); }
 
-.actions .action.active {
+.lesson-actions-container .action.active {
 	opacity: 1;
 }
 
-.actions .set-status.set-0 {
+.lesson-actions-container .set-status.set-0 {
 	border-radius: 3px 0px 0px 3px !important;
 }
 
-.actions .set-status.set-1 {
+.lesson-actions-container .set-status.set-1 {
 	border-radius: 0px !important;
 	border-top: none;
 	border-bottom: none;
 }
 
-.actions .toggle-mark {
+.lesson-actions-container .toggle-mark {
 	border-radius: 0px 3px 3px 0px !important;
 }
+
+
+/* ACTIONS IN LEARN PROCESS */
+
+.learn-actions-container {
+	text-align: center;
+}
+
+.learn-actions-container .actions {
+	display: inline-block;
+	text-align: center;
+	background: #ffffff;
+	border-radius: 12px;
+	
+	box-shadow: 1px 1px 5px 3px rgba(0, 0, 0, 0.05);
+	border: 1px solid #ddd;
+}
+
+.learn-actions-container .action {
+	float: left;
+	height: 50px;
+	min-width: 50px;
+	line-height: 50px;
+	padding: 0px 16px;
+	border-right: 1px solid #ddd;
+	cursor: pointer;
+}
+
+.learn-actions-container .action.show-translation {
+	border-radius: 12px 0px 0px 12px;
+}
+
+.learn-actions-container .action:hover {
+	background-color: #f8f8f8;
+}
+
+.learn-actions-container .action.set-status, .learn-actions-container .action.toggle-mark {
+	padding: 0px;
+	width: 50px;
+	border-radius: 0px;
+	background-size: 12px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	opacity: 0.2;
+	border: none;
+}
+
+.learn-actions-container .action.toggle-mark {
+	border-radius: 0px 12px 12px 0px
+}
+
+.learn-actions-container .action.set-status:hover, .learn-actions-container .action.toggle-mark:hover, .learn-actions-container .action.toggle-mark.active {
+	opacity: 1;
+}
+
+.learn-actions-container .action.set-status.set-0 { background-color: #f42424; background-image: url('../images/icons/close.png'); }
+.learn-actions-container .action.set-status.set-1 { background-color: #2bce2d; background-image: url('../images/icons/tick.png'); }
+.learn-actions-container .action.toggle-mark { background-color: #edaf1b; background-image: url('../images/icons/warning.png'); }
+
+
+/* FLASH CARDS */
+
+.progress {
+	text-align: center;
+	color: #aaa;
+	font-size: 12px;
+	margin-bottom: 24px;
+}
+
+.flash-cards-container {
+	width: 80%;
+	margin: 0px auto;
+	position: relative;
+	margin-bottom: 24px;
+}
+
+.flash-card {
+	float: left;
+	width: 49%;
+	height: 240px;
+	text-align: center;
+	vertical-align: middle;
+	background: #ffffff;
+	border-radius: 12px;
+	box-shadow: 1px 1px 5px 3px rgba(0, 0, 0, 0.05);
+	border: 1px solid #ddd;
+	font-size: 24px;
+	position: relative;
+	box-sizing: border-box;
+}
+
+.flash-card-seperator {
+	float: left;
+	width: 2%;
+	height: 240px;
+}
+
+.flash-card input {
+	height: 35%;
+	background: none;
+	border: none;
+	outline-width: 0;
+	outline: none;
+	text-align: center;
+	font-size: 24px;
+	display: block;
+}
+
+.flash-card input.solution {
+	height: 15% !important;
+	font-size: 10px;
+	padding-top: 0px;
+	display: none;
+}
+
+.flash-card input.solution.show {
+	display: block;
+}
+
+.flash-card .line {
+	height: 1px;
+	width: 100%;
+	background-color: #ddd;
+}
+
+.flash-cards-container.foreign-native .flash-card.first input { height: 50%; }
+.flash-cards-container.foreign-native .flash-card.first input.editable { height: 50%; }
+.flash-cards-container.foreign-native .flash-card.first input.solution { position: absolute; bottom: 0px; }
+.flash-cards-container.foreign-native .flash-card.second input.editable { height: 100%; }
+.flash-cards-container.foreign-native .flash-card.second input.solution { position: absolute; bottom: 0px; }
+
+.flash-cards-container.native-foreign .flash-card.first input { height: 100%; }
+.flash-cards-container.native-foreign .flash-card.second input.editable { height: 50%; }
+.flash-cards-container.native-foreign .flash-card.second input.solution.first { position: absolute; bottom: 50%; }
+.flash-cards-container.native-foreign .flash-card.second input.solution.second { position: absolute; bottom: 0px; }
+

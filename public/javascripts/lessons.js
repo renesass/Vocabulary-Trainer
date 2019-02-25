@@ -2,11 +2,11 @@ $(document).ready(function() {
 	$('.action').on('click', function() {
 		let vocabularyId = $(this).parent().parent().find('.vocabulary_id').val();
 		
-		let area;
-		if ($(this).hasClass("foreign-native")) area = "foreign-native";
-		else if ($(this).hasClass("native-foreign")) area = "native-foreign";
+		let direction;
+		if ($(this).hasClass("foreign-native")) direction = "foreign-native";
+		else if ($(this).hasClass("native-foreign")) direction = "native-foreign";
 		
-		if (!area) return;
+		if (!direction) return;
 				
 		if ($(this).hasClass("set-status")) {
 			let value;
@@ -19,8 +19,8 @@ $(document).ready(function() {
 			$(this).parent().find('.action.set-status').removeClass('active');
 			$(this).addClass('active');
 			
-			console.log('/vocabularies/' + vocabularyId + '/set-status/' + area + "/" + value);
-			$.get('/vocabularies/' + vocabularyId + '/set-status/' + area + "/" + value, function(res) {});
+			console.log('/vocabularies/' + vocabularyId + '/set-status/' + direction + "/" + value);
+			$.get('/vocabularies/' + vocabularyId + '/set-status/' + direction + "/" + value, function(res) {});
 		}
 		
 		else if ($(this).hasClass("toggle-mark")) {
@@ -33,7 +33,7 @@ $(document).ready(function() {
 				$(this).addClass('active');
 			}
 			
-			$.get('/vocabularies/' + vocabularyId + '/set-mark/' + area + "/" + value, function(res) {});
+			$.get('/vocabularies/' + vocabularyId + '/set-mark/' + direction + "/" + value, function(res) {});
 		}
 		
 	}); 

@@ -1,0 +1,64 @@
+extends ../layout
+
+block content
+	section.wrapper
+		h1= title
+		
+		if existingRun
+			div.row
+				p.small Du hast einen noch nicht vollendeten Lernprozess. Möchtest du diesen fortsetzen?
+				a(href="/learn/run").button Fortsetzen
+				hr
+		
+		form(method="post")
+			h2 Einstellungen
+			div.row
+				p.small-margin Lektionen
+				for lesson in lessons
+					div
+						input(type="checkbox", name="lessonIds[]", value=lesson.id)
+						label= lesson.name
+			
+			div.row
+				p.small-margin Richtung
+				div
+					input(type="radio", value="foreign-native", name="direction" checked="checked")
+					label Fremdsprache -> Muttersprache
+				div
+					input(type="radio", value="native-foreign", name="direction")
+					label Muttersprache -> Fremdsprache
+			
+			div.row
+				p.small-margin Berücksichtigte Vokabeln
+				div
+					input(type="checkbox", value="status-0", name="consideredTypes")
+					label Als nicht wissend markierte
+				div
+					input(type="checkbox", value="status-1", name="consideredTypes")
+					label Als wissend markierte
+				div
+					input(type="checkbox", value="marked-1", name="consideredTypes")
+					label Markierte
+				div
+					input(type="checkbox", value="marked-0", name="consideredTypes")
+					label Nicht markierte
+			
+			div.row
+				p.small-margin Reihenfolge
+				div
+					input(type="radio", value="random", name="order" checked="checked")
+					label Zufällig
+				div
+					input(type="radio", value="index", name="order")
+					label Nach Index
+			
+			div.row
+				p.small-margin Häufigkeit
+				div
+					input(type="radio", value="once", name="frequency" checked="checked")
+					label Alle einmal
+				div
+					input(type="radio", value="infinity", name="frequency")
+					label Unendlich
+				
+			button(submit="submit") Los

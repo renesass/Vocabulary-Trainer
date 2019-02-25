@@ -1,0 +1,64 @@
+extends ../layout
+
+block content
+	section.wrapper.no-bg
+	
+		input(type="hidden", name="vocabularyId", value=vocabulary.id)
+		input(type="hidden", name="direction", value=direction)
+		input(type="hidden", name="order", value=order)
+		
+		if frequency == "once"
+			div.progress #{currentIndex} / #{maxIndex}
+		
+		if direction == "foreign-native"
+			div.flash-cards-container.foreign-native
+
+				div.flash-card.first
+					input(value=vocabulary.foreign, disabled="disabled")
+					
+					div.line
+					
+					input(value="").editable
+					input(value=vocabulary.pronunciation, disabled="disabled").solution.pronunciation-solution
+				
+				div.flash-card-seperator
+					
+				div.flash-card.second
+					input(value="").editable
+					input(value=vocabulary.native, disabled="disabled").solution.translation-solution
+				
+				div.clear
+					
+		else
+			div.flash-cards-container.native-foreign
+				div.flash-card.first
+					input(value=vocabulary.native, disabled="disabled")
+				
+				div.flash-card-seperator
+					
+				div.flash-card.second
+					input(value="").editable
+					input(value=vocabulary.foreign, disabled="disabled").solution.translation-solution.first
+					
+					div.line
+					
+					input(value="").editable
+					input(value=vocabulary.pronunciation, disabled="disabled").solution.pronunciation-solution.second
+				
+				div.clear
+		
+		form(method="post", action="/learn/run/next")
+			div.learn-actions-container 
+				div.actions
+					div.action.show-translation Übersetzung zeigen
+					div.action.show-pronunciation Aussprache zeigen
+					button(submit="submit", name="set-0").action.set-status.set-0
+					button(submit="submit", name="set-1").action.set-status.set-1
+					
+					if (direction == "foreign-native" && vocabulary["foreign_to_native_mark"] == 1) || (direction == "native-foreign" && vocabulary["native_to_foreign_mark"] == 1)
+						div.action.toggle-mark.active
+					else 
+						div.action.toggle-mark
+					
+	script(src="https://code.jquery.com/jquery-3.3.1.min.js")
+	script(src="../javascripts/learn.js")
