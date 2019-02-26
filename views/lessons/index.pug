@@ -6,17 +6,22 @@ block content
 			span
 				a(href='/lessons/new').button.small.small-margin-left Neue Lektion
 		
+		if lessons.length == 0
+			div Keine Lektionen vorhanden
+		
 		each lesson in lessons
 			h2= lesson.name
 				span
 					a(href='/lessons/edit/' + lesson.id).small-margin-left ändern
 					a(href='/lessons/delete/' + lesson.id).small-margin-left löschen
 			
-			table.col-3.with-border
+			table.col-2.with-border
 				each vocabulary in lesson.vocabularies
 					tr
 						td= vocabulary.foreign
-						td= vocabulary.pronunciation
+							if vocabulary.pronunciation != ""
+								span.small-margin-left #{vocabulary.pronunciation}
+
 						td= vocabulary.native
 						td
 							div.lesson-actions-container

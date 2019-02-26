@@ -11,7 +11,8 @@ block content
 			div.progress #{currentIndex} / #{maxIndex}
 		
 		if direction == "foreign-native"
-			div.flash-cards-container.foreign-native
+			
+			div.flash-cards-container.foreign-native(class=showPronunciation ? "" : "without-pronunciation")
 
 				div.flash-card.first
 					input(value=vocabulary.foreign, disabled="disabled")
@@ -30,7 +31,7 @@ block content
 				div.clear
 					
 		else
-			div.flash-cards-container.native-foreign
+			div.flash-cards-container.native-foreign(class=showPronunciation ? "" : "without-pronunciation")
 				div.flash-card.first
 					input(value=vocabulary.native, disabled="disabled")
 				
@@ -51,7 +52,8 @@ block content
 			div.learn-actions-container 
 				div.actions
 					div.action.show-translation Übersetzung zeigen
-					div.action.show-pronunciation Aussprache zeigen
+					if showPronunciation
+						div.action.show-pronunciation Aussprache zeigen
 					button(submit="submit", name="set-0").action.set-status.set-0
 					button(submit="submit", name="set-1").action.set-status.set-1
 					

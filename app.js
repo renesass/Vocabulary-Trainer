@@ -5,11 +5,15 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('client-sessions');
 
+// models
+var Language = require('./models/Language');
+
 // routers
 var loginRouter = require('./routes/login');
 var logoutRouter = require('./routes/logout');
 var indexRouter = require('./routes/index');
 var lessonsRouter = require('./routes/lessons');
+var languagesRouter = require('./routes/languages');
 var vocabulariesRouter = require('./routes/vocabularies');
 var learnRouter = require('./routes/learn');
 
@@ -23,6 +27,7 @@ app.set('view engine', 'pug');
 app.locals.pageTitle = 'Chinese Vocabulary';
 app.locals.navigationPoints = {
 	'Lektionen': '/lessons',
+	'Sprachen': '/languages',
 	'Lernen': '/learn',
 	'Abmelden': '/logout'
 };
@@ -42,6 +47,36 @@ app.use(session({
 	ephemeral: true
 }));
 
+// set root for navigation points
+app.use(function(req, res, next) {
+    res.locals.root = '/' + req.originalUrl.split('/')[1];
+    next();
+});
+
+// save selected language
+app.use(function(req, res, next) {	
+	Language.findMain(function(error, language) {
+		if (language == null) {
+			if (res.locals.root != "/languages" && res.locals.root != "/login" && res.locals.root != "/logout") {
+				req.session.flash = { 'type': 'error', 'message': 'Bitte wähle eine aktive Sprache aus.'}
+				return res.redirect("/languages")
+			}
+		} else {
+			res.locals.selectedLanguage = language;
+		}
+		
+		next();
+	});
+});
+
+// flash
+app.use(function(req, res, next) {
+    res.locals.flash = req.session.flash;
+    delete req.session.flash;
+    next();
+});
+
+
 // if the user is not logged in redirect to login
 function requireLogin(req, res, next) {
 	if (!req.session.user) {
@@ -55,6 +90,7 @@ app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/', requireLogin, indexRouter);
 app.use('/lessons', requireLogin, lessonsRouter);
+app.use('/languages', requireLogin, languagesRouter);
 app.use('/vocabularies', requireLogin, vocabulariesRouter);
 app.use('/learn', requireLogin, learnRouter);
 

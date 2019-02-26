@@ -5,16 +5,25 @@ var Vocabulary = require('../models/Vocabulary');
 var array = require('../utils/array');
 
 router.get('/', function(req, res, next) {
-	Lesson.findAll(function(error, lessons) {
+	Lesson.findAllByLanguageId(res.locals.selectedLanguage.id, function(error, lessons) {
 		if (error) throw new Error();
 		
 		let existingRun = false;
 		if (req.session.run) existingRun = true;
 		
+		// just show lessons for current language
+		let filteredLessons = [];
+		for (var i = 0; i < lessons.length; i++) {
+			let lesson = lessons[i];
+			if (lesson.languageId == res.locals.selectedLanguage.id) {
+				filteredLessons.push(lesson);
+			}
+		}
+		
 		res.render('learn/index', { 
 			title: 'Lernen',
 			existingRun: existingRun,
-			lessons: lessons
+			lessons: filteredLessons
 		});
 	});
 });
@@ -32,6 +41,8 @@ router.get('/run', function(req, res, next) {
 	Vocabulary.findOneById(currentVocabularyId, function(error, vocabulary) {
 		if (error) throw new Error();
 		
+		let showPronunciation = (vocabulary.pronunciation == "" ? false : true);
+		
 		res.render('learn/details', { 
 			title: 'Lernen',
 			currentIndex: run.currentIndex + 1,
@@ -39,6 +50,7 @@ router.get('/run', function(req, res, next) {
 			direction: run.direction,
 			frequency: run.frequency,
 			order: run.order,
+			showPronunciation: showPronunciation,
 			vocabulary: vocabulary
 		});
 	});
@@ -57,10 +69,12 @@ router.post('/run/next', function(req, res, next) {
 		if (req.session.run.direction == "foreign-native") vocabulary.foreign_to_native_status = (("set-0" in req.body) ? 0 : 1);
 		else vocabulary.native_to_foreign_status = (("set-0" in req.body) ? 0 : 1);
 		
-		vocabulary.save(function(success) {
+		vocabulary.save(function(error) {
+			if (error) throw new Error();
+			
 			if (run.currentIndex == run.vocabularyIds.length - 1) {
 				// at the end? reset currentIndex and start again
-				if (run.frequency = "infinity") {
+				if (run.frequency == "infinity") {
 					req.session.run.currentIndex = 0;
 					return res.redirect('/learn/run');
 				}
@@ -68,7 +82,7 @@ router.post('/run/next', function(req, res, next) {
 				delete req.session.run;
 				res.redirect('/learn');
 			} else {
-				if (success && (run.frequency == "once" || (run.frequency == "infinity" && run.order == "index"))) req.session.run.currentIndex += 1;
+				if (run.frequency == "once" || (run.frequency == "infinity" && run.order == "index")) req.session.run.currentIndex += 1;
 				res.redirect('/learn/run');
 			}
 		});
@@ -85,10 +99,10 @@ router.post('/', function(req, res, next) {
 	// convert to array
 	if (typeof lessonIds === "string") lessonIds = [lessonIds];
 	if (typeof consideredTypes === "string") consideredTypes = [consideredTypes];
-
 	
 	if (!lessonIds || !consideredTypes || !["foreign-native", "native-foreign"].includes(direction)) {
-		res.redirect('/learn');
+		req.session.flash = {'type': 'error', 'message': 'Das Formular muss ordnungsgemäß ausgefüllt werden.'}
+		return res.redirect('back');
 	} else {
 		if (direction == "foreign-native") direction = "foreign_to_native";
 		else direction = "native_to_foreign"
@@ -119,7 +133,10 @@ router.post('/', function(req, res, next) {
 			}
 		}
 		
-		if (filteredVocabulariyIds.length == 0) return res.redirect('/learn');
+		if (filteredVocabulariyIds.length == 0) {
+			req.session.flash = {'type': 'error', 'message': 'Bei den angegebenen Kriterien wurden keine Vokabeln gefunden.'}
+			return res.redirect('back');
+		}
 		
 		if (order == "random") filteredVocabulariyIds = array.shuffle(filteredVocabulariyIds);
 		

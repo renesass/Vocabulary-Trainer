@@ -4,21 +4,32 @@ html
 		title #{title} | #{pageTitle}
 		link(rel='stylesheet', href='/stylesheets/style.css')
 	body
+		if root != "/login"
+			div#sub-header
+					if selectedLanguage
+						div.wrapper.no-side-padding.right-information Ausgewählte Sprache: #{selectedLanguage.name}
+					else
+						div.wrapper.no-side-padding.right-information Ausgewählte Sprache: Keine
 		header
-			div.wrapper
-				div#page-title= pageTitle
-				
-				nav
-					ul
-						for address, label in navigationPoints
-							li 
-								if title == label
-									a(href=address).active= label
-								else 
-									a(href=address)= label
+			div.wrapper.no-side-padding
+				if root != "/login"
+					div#page-title= pageTitle
+					nav
+						ul
+							for address, label in navigationPoints
+								li 
+									if root == address
+										a(href=address).active= label
+									else 
+										a(href=address)= label
+				else
+					div#page-title.center= pageTitle
 							
 				div(class='clear')
 		#header-border
 			
 		main
+			if flash
+				div(class="wrapper alert " + flash.type)= flash.message
+				
 			block content

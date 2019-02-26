@@ -13,7 +13,7 @@ block content
 		form(method="post")
 			h2 Einstellungen
 			div.row
-				p.small-margin Lektionen
+				p.small-margin Berücksichtigte Lektionen
 				for lesson in lessons
 					div
 						input(type="checkbox", name="lessonIds[]", value=lesson.id)
@@ -23,10 +23,10 @@ block content
 				p.small-margin Richtung
 				div
 					input(type="radio", value="foreign-native", name="direction" checked="checked")
-					label Fremdsprache -> Muttersprache
+					label Fremdsprache nach Muttersprache
 				div
 					input(type="radio", value="native-foreign", name="direction")
-					label Muttersprache -> Fremdsprache
+					label Muttersprache nach Fremdsprache
 			
 			div.row
 				p.small-margin Berücksichtigte Vokabeln
@@ -61,4 +61,4 @@ block content
 					input(type="radio", value="infinity", name="frequency")
 					label Unendlich
 				
-			button(submit="submit") Los
+			button(submit="submit") Vokabeln finden

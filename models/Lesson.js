@@ -3,9 +3,10 @@ var Vocabulary = require('./Vocabulary');
 var async = require('async');
 
 class Lesson extends Model {
-	constructor(id, name) {
+	constructor(id, languageId, name) {
 		super(id);
 		
+		this.languageId = languageId;
 		this.name = name;
 	}
 	
@@ -15,26 +16,27 @@ class Lesson extends Model {
 		// update
 		if (this.id) {
 			Lesson.db.query("UPDATE lessons SET name = ? WHERE id = ?", [this.name, this.id], function (error, result) {
-				if (error) callback(false);
-				else callback(true)
+				if (error) return callback(true);
+				
+				callback(false)
 			});
 			
 		// create new entry
 		} else {
-			Lesson.db.query("INSERT INTO lessons (name, created) VALUES (?, ?)", [this.name, new Date()], function (error, result) {
-				if (error) return callback(false);
+			Lesson.db.query("INSERT INTO lessons (language_id, name, created) VALUES (?, ?, ?)", [this.languageId, this.name, new Date()], function (error, result) {
+				if (error) return callback(true);
 				
 				self.id = result.insertId;
-				callback(true);
+				callback(false);
 			});
 		}
 	}
 	
 	delete(callback) {
 		Vocabulary.db.query("DELETE FROM lessons WHERE id = ?", [this.id], function (error, result) {
-			if (error) return callback(false);
+			if (error) return callback(true);
 				
-			callback(true)
+			callback(false)
 		});
 	}
 	
@@ -61,7 +63,7 @@ class Lesson extends Model {
 		    if (error || result.length != 1) return callback(true, null);
 		    
 		    const lessonData = result[0];
-		    var lesson = new Lesson(lessonData.id, lessonData.name);
+		    var lesson = new Lesson(lessonData.id, lessonData.language_id, lessonData.name);
 		    
 		    lesson.addVocabularies(function (error) {
 			    if (error) return callback(true, null);
@@ -80,7 +82,30 @@ class Lesson extends Model {
 		    // first create lesson objects from the result
 		    for (var i = 0; i < result.length; i++) {
 				var lessonData = result[i];
-			    var lesson = new Lesson(lessonData.id, lessonData.name);
+			    var lesson = new Lesson(lessonData.id, lessonData.language_id, lessonData.name);
+			    lessons.push(lesson);
+			}
+		    
+		    // now add the vocabularies
+		    async.eachSeries(lessons, function iteratee(lesson, callback) {
+			    lesson.addVocabularies(callback);
+			}, function(error) {
+				if (error) return callback(true, null);
+				return callback(false, lessons);
+			});
+		}); 
+	}
+	
+	static findAllByLanguageId(languageId, callback) {		
+		this.db.query("SELECT * FROM lessons WHERE language_id = ? ORDER BY created DESC", [languageId], function (error, result) {
+		    if (error) return callback(true, null);
+		    
+		    var lessons = [];
+		    
+		    // first create lesson objects from the result
+		    for (var i = 0; i < result.length; i++) {
+				var lessonData = result[i];
+			    var lesson = new Lesson(lessonData.id, lessonData.language_id, lessonData.name);
 			    lessons.push(lesson);
 			}
 		    

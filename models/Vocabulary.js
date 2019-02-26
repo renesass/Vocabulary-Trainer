@@ -21,9 +21,9 @@ class Vocabulary extends Model {
 		// update
 		if (this.id) {
 			Vocabulary.db.query("UPDATE vocabularies SET foreign_word = ?, pronunciation = ?, native_word = ?, foreign_to_native_status = ?, foreign_to_native_mark = ?, native_to_foreign_status = ?, native_to_foreign_mark = ? WHERE id = ?", [this.foreign, this.pronunciation, this.native, this.foreign_to_native_status, this.foreign_to_native_mark, this.native_to_foreign_status, this.native_to_foreign_mark, this.id], function (error, result) {
-				if (error) return callback(false);
+				if (error) return callback(true);
 
-				callback(true)
+				callback(false)
 			});
 			
 		// create new entry
@@ -31,19 +31,19 @@ class Vocabulary extends Model {
 			let query = "INSERT INTO vocabularies (lesson_id, foreign_word, pronunciation, native_word, foreign_to_native_status, foreign_to_native_mark, native_to_foreign_status, native_to_foreign_mark) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 			let data = [this.lesson_id, this.foreign, this.pronunciation, this.native, this.foreign_to_native_status, this.foreign_to_native_mark, this.native_to_foreign_status, this.native_to_foreign_mark];
 			Vocabulary.db.query(query, data, function (error, result) {
-				if (error) return callback(false);
+				if (error) return callback(true);
 				
 				self.id = result.insertId;
-				callback(true);
+				callback(false);
 			});
 		}
 	}
 	
 	delete(callback) {
 		Vocabulary.db.query("DELETE FROM vocabularies WHERE id = ?", [this.id], function (error, result) {
-			if (error) return callback(false);
+			if (error) return callback(true);
 				
-			callback(true)
+			callback(false)
 		});
 	}
 	

@@ -5,7 +5,7 @@ var Lesson = require('../models/Lesson');
 var Vocabulary = require('../models/Vocabulary');
 
 router.get('/', function(req, res, next) {
-	Lesson.findAll(function(error, lessons) {
+	Lesson.findAllByLanguageId(res.locals.selectedLanguage.id, function(error, lessons) {
 		if (error) return;
 		
 		res.render('lessons/index', { title: 'Lektionen', lessons: lessons});
@@ -27,10 +27,13 @@ router.get('/edit/:id', function(req, res, next) {
 
 router.get('/delete/:id', function(req, res, next) {
 	Lesson.findOneById(req.params.id, function(error, lesson) {
-		lesson.delete(function() {});
+		lesson.delete(function(error) {
+			if (error) req.session.flash = { 'type': 'error', 'message': 'Die Lektion wurde nicht gelöscht.' }
+			else req.session.flash = { 'type': 'success', 'message': 'Die Lektion wurde erfolgreich gelöscht.' }
+			
+			res.redirect('/lessons');
+		});
 	});
-	
-	res.redirect('/lessons');
 });
 
 var save = function(req, res, next) {
@@ -38,17 +41,17 @@ var save = function(req, res, next) {
 	let name = req.body.name;
 	
 	if (!name) {
-		if (id) return res.render('lessons/details', { title: 'Lektion bearbeiten', error: 'Fehler' });
-		return res.render('lessons/details', { title: 'Neue Lektion', error: 'Fehler' });
+		req.session.flash = {'type': 'error', 'message': 'Es muss ein Name angegeben werden.'};
+		return res.redirect('back');
 	}
 	
 	Lesson.findOneById(id, function (error, lesson) {
 		if (error) return;
-		if (lesson == null) lesson = new Lesson(null, name);
+		if (lesson == null) lesson = new Lesson(null, res.locals.selectedLanguage.id, name);
 		
 		lesson.name = name;
-		lesson.save(function(success) {
-			if (!success) return; // TODO
+		lesson.save(function(error) {
+			if (error) throw new Error(); 
 			
 			let vocabularyIdArray = req.body["id[]"];
 			let foreignArray = req.body["foreign[]"];
@@ -68,7 +71,9 @@ var save = function(req, res, next) {
 				for (i = 0; i < oldVocabularies.length; i++) {
 					let oldVocabulary = oldVocabularies[i];
 					if (!vocabularyIdArray || !vocabularyIdArray.includes(oldVocabulary.id.toString())) {
-						oldVocabulary.delete(function() {});
+						oldVocabulary.delete(function(error) {
+							if (error) throw new Error();
+						});
 					}
 				}
 			}
@@ -83,7 +88,7 @@ var save = function(req, res, next) {
 				
 				if (foreign.length != 0 && native.length != 0) {
 					Vocabulary.findOneById(vocabularyId, function (error, vocabulary) {
-						if (error) return;
+						if (error) throw new Error();
 						if (vocabulary == null) vocabulary = new Vocabulary(null, lesson.id, foreign, pronunciation, native, 0, 0, 0, 0);
 						else {
 							vocabulary.foreign = foreign;
@@ -91,7 +96,9 @@ var save = function(req, res, next) {
 							vocabulary.native = native;
 						}
 
-						vocabulary.save(function() {});						
+						vocabulary.save(function(error) {
+							if (error) throw new Error();
+						});						
 					});
 				}
 			}

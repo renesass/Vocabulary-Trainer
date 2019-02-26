@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+	section.wrapper
+		h1= title
+				
+		form(method="post")
+			div.row
+				p.small Name
+				if language
+					input(name="name", value=language.name)
+				else
+					input(name="name")
+			
+			div.row
+				if language && language.main
+					input(type="checkbox", name="main", checked="checked")
+				else
+					input(type="checkbox", name="main")
+				label(for="main") Als Hauptsprache ausgewählt
+			
+			button(submit="submit") Speichern
