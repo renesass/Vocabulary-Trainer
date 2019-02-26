@@ -19,7 +19,7 @@ block content
 					
 					div.line
 					
-					input(value="").editable
+					input(value="", onkeyup='toPinyin(this)').editable
 					input(value=vocabulary.pronunciation, disabled="disabled").solution.pronunciation-solution
 				
 				div.flash-card-seperator
@@ -43,7 +43,7 @@ block content
 					
 					div.line
 					
-					input(value="").editable
+					input(value="", onkeyup='toPinyin(this)').editable
 					input(value=vocabulary.pronunciation, disabled="disabled").solution.pronunciation-solution.second
 				
 				div.clear
@@ -63,4 +63,5 @@ block content
 						div.action.toggle-mark
 					
 	script(src="https://code.jquery.com/jquery-3.3.1.min.js")
+	script(src="../javascripts/pronunciation_transformation.js")
 	script(src="../javascripts/learn.js")

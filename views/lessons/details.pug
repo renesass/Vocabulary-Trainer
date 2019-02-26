@@ -27,7 +27,7 @@ block content
 								input(name="id[]", type="hidden", value=vocabulary.id) 
 								input(name="foreign[]", value=vocabulary.foreign) 
 							td.no-padding
-								input(name="pronunciation[]", value=vocabulary.pronunciation) 
+								input(name="pronunciation[]", value=vocabulary.pronunciation, onkeyup='toPinyin(this)') 
 							td.no-padding
 								input(name="native[]", value=vocabulary.native) 
 							td.no-padding
@@ -43,6 +43,8 @@ block content
 	script(src="https://code.jquery.com/jquery-3.3.1.min.js")
 	
 	if lesson
+		script(src="../../javascripts/pronunciation_transformation.js")
 		script(src="../../javascripts/vocabularies.js")
 	else
+		script(src="../javascripts/pronunciation_transformation.js")
 		script(src="../javascripts/vocabularies.js")
