@@ -17,11 +17,9 @@ $(document).ready(function() {
 			$(this).addClass('active');
 		}
 		
-		let vocabularyId = Number($("input[name='vocabularyId']").val());
+		let id = Number($("input[name='id']").val());
 		let direction = $("input[name='direction']").val();
-		
-		console.log('/vocabularies/' + vocabularyId + '/set-mark/' + direction + "/" + value);
 			
-		$.get('/vocabularies/' + vocabularyId + '/set-mark/' + direction + "/" + value, function(res) {});
+		$.get('/vocabularies/' + id + '/set-mark/' + direction + "/" + value, function(res) {});
 	});
 });

@@ -1,7 +1,10 @@
 doctype html
 html
 	head
-		title #{title} | #{pageTitle}
+		if title
+			title #{title} | #{pageTitle}
+		else
+			title= pageTitle
 		link(rel='stylesheet', href='/stylesheets/style.css')
 	body
 		if root != "/login"
@@ -10,6 +13,7 @@ html
 						div.wrapper.no-side-padding.right-information Ausgewählte Sprache: #{selectedLanguage.name}
 					else
 						div.wrapper.no-side-padding.right-information Ausgewählte Sprache: Keine
+						
 		header
 			div.wrapper.no-side-padding
 				if root != "/login"
@@ -30,6 +34,6 @@ html
 			
 		main
 			if flash
-				div(class="wrapper alert " + flash.type)= flash.message
+				div(class="wrapper" + (root == "/login" ? " small" : "") + " alert " + flash.type)= flash.message
 				
 			block content

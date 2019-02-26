@@ -5,11 +5,11 @@ var connection = mysql.createConnection({
     port: 3306,
     user: 'root',
     password: '',
-    database: 'chinese_vocabulary'
+    database: 'vocabulary_trainer'
 });
 
 connection.connect(function(err) {
-  if (err) throw err;
+	if (err) throw err;
 });
 
 module.exports = connection;

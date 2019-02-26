@@ -4,6 +4,7 @@ body {
 	font: 14px "Open Sans", Helvetica, Arial, sans-serif;
 	color: #2B323B;
 	background-color: #fafafa;
+	line-height: 1.25em;
 }
 
 a {
@@ -144,7 +145,7 @@ ul.list li {
 }
 
 .wrapper.small {
-	width: 360px;
+	width: 410px;
 }
 
 header {

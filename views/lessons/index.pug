@@ -27,37 +27,36 @@ block content
 							div.lesson-actions-container
 								input(type="hidden", class="vocabulary_id", value=vocabulary.id)
 								div.actions
-									if vocabulary.foreign_to_native_status == 0
+									if vocabulary.foreignNativeStatus == 0
 										button.action.set-status.set-0.foreign-native.active
 									else 
 										button.action.set-status.set-0.foreign-native
 									
-									if vocabulary.foreign_to_native_status == 1
+									if vocabulary.foreignNativeStatus == 1
 										button.action.set-status.set-1.foreign-native.active
 									else 
 										button.action.set-status.set-1.foreign-native
 									
-									if vocabulary.foreign_to_native_mark == 1
+									if vocabulary.foreignNativeMark == 1
 										button.action.toggle-mark.foreign-native.active
 									else 
 										button.action.toggle-mark.foreign-native
 								
 								div.actions
-									if vocabulary.native_to_foreign_status == 0
+									if vocabulary.nativeForeignStatus == 0
 										button.action.set-status.set-0.native-foreign.active
 									else 
 										button.action.set-status.set-0.native-foreign
 									
-									if vocabulary.native_to_foreign_status == 1
+									if vocabulary.nativeForeignStatus == 1
 										button.action.set-status.set-1.native-foreign.active
 									else 
 										button.action.set-status.set-1.native-foreign
 									
-									if vocabulary.native_to_foreign_mark == 1
+									if vocabulary.nativeForeignMark == 1
 										button.action.toggle-mark.native-foreign.active
 									else 
 										button.action.toggle-mark.native-foreign
-			
 			
 			
 	script(src="https://code.jquery.com/jquery-3.3.1.min.js")

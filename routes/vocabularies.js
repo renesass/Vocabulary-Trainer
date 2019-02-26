@@ -11,12 +11,13 @@ var setValue = function(id, value, direction, attribute, callback) {
 	
 	id = Number(id);
 	value = Number(value);
+	attribute = attribute.charAt(0).toUpperCase() + attribute.slice(1); // make first letter uppercase
 	
 	Vocabulary.findOneById(id, function (error, vocabulary) {
 		if (error || !vocabulary) return false;
 		
-		if (direction == "foreign-native") vocabulary["foreign_to_native_" + attribute]  = value;
-		else if (direction == "native-foreign") vocabulary["native_to_foreign_" + attribute] = value;
+		if (direction == "foreign-native") vocabulary["foreignNative" + attribute]  = value;
+		else if (direction == "native-foreign") vocabulary["nativeForeign" + attribute] = value;
 
 		vocabulary.save(function(success) {
 			callback();

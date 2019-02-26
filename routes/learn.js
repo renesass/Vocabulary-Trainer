@@ -29,13 +29,13 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/run', function(req, res, next) {
-	if (!req.session.run) throw new Error();
-	
-	if (req.session.run.order == "random" && req.session.run.frequency == "infinity") {
-		req.session.run.vocabularyIds = array.shuffle(req.session.run.vocabularyIds);
-	}
-	
 	let run = req.session.run;
+	if (!run) throw new Error();
+	
+	if (run.oder == "random" && .run.frequency == "infinity") {
+		req.session.run.vocabularyIds = array.shuffle(req.session.run.vocabularyIds);
+		run = req.session.run;
+	}
 	
 	let currentVocabularyId = run.vocabularyIds[run.currentIndex];
 	Vocabulary.findOneById(currentVocabularyId, function(error, vocabulary) {
@@ -66,8 +66,8 @@ router.post('/run/next', function(req, res, next) {
 	Vocabulary.findOneById(currentVocabularyId, function(error, vocabulary) {
 		if (error) throw new Error();
 		
-		if (req.session.run.direction == "foreign-native") vocabulary.foreign_to_native_status = (("set-0" in req.body) ? 0 : 1);
-		else vocabulary.native_to_foreign_status = (("set-0" in req.body) ? 0 : 1);
+		if (run.direction == "foreign-native") vocabulary.foreignNativeStatus = (("set-0" in req.body) ? 0 : 1);
+		else vocabulary.nativeForeignStatus = (("set-0" in req.body) ? 0 : 1);
 		
 		vocabulary.save(function(error) {
 			if (error) throw new Error();
@@ -104,8 +104,8 @@ router.post('/', function(req, res, next) {
 		req.session.flash = {'type': 'error', 'message': 'Das Formular muss ordnungsgemäß ausgefüllt werden.'}
 		return res.redirect('back');
 	} else {
-		if (direction == "foreign-native") direction = "foreign_to_native";
-		else direction = "native_to_foreign"
+		if (direction == "foreign-native") direction = "foreignNative";
+		else direction = "nativeForeign"
 	}
 	
 	Lesson.findAll(function(error, lessons) {
@@ -123,10 +123,10 @@ router.post('/', function(req, res, next) {
 			for (var j = 0; j < vocabularies.length; j++) {
 				let vocabulary = vocabularies[j];
 				
-				if (consideredTypes.includes("status-0") && vocabulary[direction + "_status"] == 0
-					|| consideredTypes.includes("status-1") && vocabulary[direction + "_status"] == 1
-					|| consideredTypes.includes("marked-0") && vocabulary[direction + "_mark"] == 0
-					|| consideredTypes.includes("marked-1") && vocabulary[direction + "_mark"] == 1) {
+				if (consideredTypes.includes("status-0") && vocabulary[direction + "Status"] == 0
+					|| consideredTypes.includes("status-1") && vocabulary[direction + "Status"] == 1
+					|| consideredTypes.includes("marked-0") && vocabulary[direction + "Mark"] == 0
+					|| consideredTypes.includes("marked-1") && vocabulary[direction + "Mark"] == 1) {
 					
 					filteredVocabulariyIds.push(vocabulary.id);
 				}
@@ -144,9 +144,9 @@ router.post('/', function(req, res, next) {
 		req.session.run = {
 			"vocabularyIds": filteredVocabulariyIds,
 			"currentIndex": 0,
-			"direction": req.body.direction,
-			"frequency": req.body.frequency,
-			"order": req.body.order
+			"direction": direction,
+			"frequency": frequency,
+			"order": order
 		};
 		
 		res.redirect('/learn/run');

@@ -80,6 +80,8 @@ var save = function(req, res, next) {
 			
 			if (!vocabularyIdArray || vocabularyIdArray.length == 0) return res.redirect('/lessons');
 			
+			console.log(vocabularyIdArray);
+			
 			for (i = 0; i < vocabularyIdArray.length; i++) {
 				let vocabularyId = vocabularyIdArray[i];
 				let foreign = foreignArray[i];
@@ -88,7 +90,6 @@ var save = function(req, res, next) {
 				
 				if (foreign.length != 0 && native.length != 0) {
 					Vocabulary.findOneById(vocabularyId, function (error, vocabulary) {
-						if (error) throw new Error();
 						if (vocabulary == null) vocabulary = new Vocabulary(null, lesson.id, foreign, pronunciation, native, 0, 0, 0, 0);
 						else {
 							vocabulary.foreign = foreign;
@@ -98,7 +99,7 @@ var save = function(req, res, next) {
 
 						vocabulary.save(function(error) {
 							if (error) throw new Error();
-						});						
+						});		
 					});
 				}
 			}

@@ -15,11 +15,12 @@ router.post('/', function(req, res, next) {
 	User.findByMail(req.body.email, function(error, user) {
 		if (!error && user.comparePassword(req.body.password)) {
 			req.session.user = user;
-				
-			res.redirect('../');
+			
+			return res.redirect('/');
 		} 
 		
-		res.render('login', { title: 'Login', errorMessage: 'Fehler' });
+		req.session.flash = { 'type': 'error', 'message': 'Die Kombination von Benutzername und Passwort stimmt nicht überein.'};
+		res.redirect('back');
 	});
 });
 

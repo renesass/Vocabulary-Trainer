@@ -24,7 +24,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // define some basic information
-app.locals.pageTitle = 'Chinese Vocabulary';
+app.locals.pageTitle = 'Vocabulary Trainer';
 app.locals.navigationPoints = {
 	'Lektionen': '/lessons',
 	'Sprachen': '/languages',
@@ -75,7 +75,6 @@ app.use(function(req, res, next) {
     delete req.session.flash;
     next();
 });
-
 
 // if the user is not logged in redirect to login
 function requireLogin(req, res, next) {

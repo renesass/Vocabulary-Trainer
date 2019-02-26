@@ -3,14 +3,14 @@ extends ../layout
 block content
 	section.wrapper.no-bg
 	
-		input(type="hidden", name="vocabularyId", value=vocabulary.id)
-		input(type="hidden", name="direction", value=direction)
+		input(type="hidden", name="id", value=vocabulary.id)
+		input(type="hidden", name="direction", value=(direction == "foreignNative" ? "foreign-native" : "native-foreign"))
 		input(type="hidden", name="order", value=order)
 		
 		if frequency == "once"
 			div.progress #{currentIndex} / #{maxIndex}
 		
-		if direction == "foreign-native"
+		if direction == "foreignNative"
 			
 			div.flash-cards-container.foreign-native(class=showPronunciation ? "" : "without-pronunciation")
 
@@ -57,7 +57,7 @@ block content
 					button(submit="submit", name="set-0").action.set-status.set-0
 					button(submit="submit", name="set-1").action.set-status.set-1
 					
-					if (direction == "foreign-native" && vocabulary["foreign_to_native_mark"] == 1) || (direction == "native-foreign" && vocabulary["native_to_foreign_mark"] == 1)
+					if (direction == "foreignNative" && vocabulary["foreignNativeMark"] == 1) || (direction == "nativeForeign" && vocabulary["nativeForeignMark"] == 1)
 						div.action.toggle-mark.active
 					else 
 						div.action.toggle-mark

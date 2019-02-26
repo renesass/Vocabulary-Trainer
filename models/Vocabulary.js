@@ -2,17 +2,17 @@ var Model = require('./Model');
 const bcrypt = require('bcrypt');
 
 class Vocabulary extends Model {
-	constructor(id, lesson_id, foreign, pronunciation, native, foreign_to_native_status, foreign_to_native_mark, native_to_foreign_status, native_to_foreign_mark) {
+	constructor(id, lesson_id, foreign, pronunciation, native, foreignNativeStatus, foreignNativeMark, nativeForeignStatus, nativeForeignMark) {
 		super(id);
 		
 		this.lesson_id = lesson_id;
 		this.foreign = foreign;
 		this.pronunciation = pronunciation;
 		this.native = native;
-		this.foreign_to_native_status = foreign_to_native_status;
-		this.foreign_to_native_mark = foreign_to_native_mark;
-		this.native_to_foreign_status = native_to_foreign_status;
-		this.native_to_foreign_mark = native_to_foreign_mark;
+		this.foreignNativeStatus = foreignNativeStatus;
+		this.foreignNativeMark = foreignNativeMark;
+		this.nativeForeignStatus = nativeForeignStatus;
+		this.nativeForeignMark = nativeForeignMark;
 	}
 	
 	save(callback) {
@@ -20,7 +20,15 @@ class Vocabulary extends Model {
 		
 		// update
 		if (this.id) {
-			Vocabulary.db.query("UPDATE vocabularies SET foreign_word = ?, pronunciation = ?, native_word = ?, foreign_to_native_status = ?, foreign_to_native_mark = ?, native_to_foreign_status = ?, native_to_foreign_mark = ? WHERE id = ?", [this.foreign, this.pronunciation, this.native, this.foreign_to_native_status, this.foreign_to_native_mark, this.native_to_foreign_status, this.native_to_foreign_mark, this.id], function (error, result) {
+			let query = "UPDATE vocabularies SET foreign_word = ?, pronunciation = ?, native_word = ?, foreign_to_native_status = ?, foreign_to_native_mark = ?, native_to_foreign_status = ?, native_to_foreign_mark = ? WHERE id = ?";
+			let data = [
+				this.foreign, this.pronunciation, this.native, 
+				this.foreignNativeStatus, this.foreignNativeMark, 
+				this.nativeForeignStatus, this.nativeForeignMark, 
+				this.id
+			]
+		
+			Vocabulary.db.query(query, data, function (error, result) {
 				if (error) return callback(true);
 
 				callback(false)
@@ -29,7 +37,12 @@ class Vocabulary extends Model {
 		// create new entry
 		} else {
 			let query = "INSERT INTO vocabularies (lesson_id, foreign_word, pronunciation, native_word, foreign_to_native_status, foreign_to_native_mark, native_to_foreign_status, native_to_foreign_mark) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-			let data = [this.lesson_id, this.foreign, this.pronunciation, this.native, this.foreign_to_native_status, this.foreign_to_native_mark, this.native_to_foreign_status, this.native_to_foreign_mark];
+			let data = [
+				this.lesson_id, this.foreign, this.pronunciation, this.native, 
+				this.foreignNativeStatus, this.foreignNativeMark, 
+				this.nativeForeignStatus, this.nativeForeignMark
+			];
+			
 			Vocabulary.db.query(query, data, function (error, result) {
 				if (error) return callback(true);
 				
@@ -48,7 +61,7 @@ class Vocabulary extends Model {
 	}
 	
 	static findOneById(id, callback) {
-		if (!id) callback(false, null)
+		if (!id) return callback(false, null)
 		
 		this.db.query("SELECT * FROM vocabularies WHERE id = ?", [id], function (error, result) {
 		    if (error || result.length != 1) return callback(true, null);
@@ -67,7 +80,7 @@ class Vocabulary extends Model {
 		    );
 		    
 		    return callback(false, vocabulary);    
-		});
+		}); 
 	} 
 	
 	static findAllByLessonId(id, callback) {
