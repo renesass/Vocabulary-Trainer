@@ -1,6 +1,6 @@
 {
-  "name": "chinesevocabulary",
-  "version": "0.0.0",
+  "name": "vocabulary-trainer",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"

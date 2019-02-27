@@ -32,7 +32,7 @@ router.get('/run', function(req, res, next) {
 	let run = req.session.run;
 	if (!run) throw new Error();
 	
-	if (run.oder == "random" && .run.frequency == "infinity") {
+	if (run.oder == "random" && run.frequency == "infinity") {
 		req.session.run.vocabularyIds = array.shuffle(req.session.run.vocabularyIds);
 		run = req.session.run;
 	}
