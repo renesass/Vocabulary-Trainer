@@ -1,10 +1,10 @@
 $(document).ready(function() {
 	$('.action.show-translation').on('click', function() {
-		$('input.translation-solution').addClass("show");
+		$('.translation-solution').addClass("show");
 	});
 	
 	$('.action.show-pronunciation').on('click', function() {
-		$('input.pronunciation-solution').addClass("show");
+		$('.pronunciation-solution').addClass("show");
 	});
 	
 	$('.action.toggle-mark').on('click', function() {

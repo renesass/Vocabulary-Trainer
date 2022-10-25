@@ -8,7 +8,7 @@ function toPinyin(self) {
 		'o1': 'ō',
 		'o2': 'ó',
 		'o3': 'ǒ',
-		'o4': 'à',
+		'o4': 'ò',
 		
 		'u1': 'ū',
 		'u2': 'ú',
@@ -19,6 +19,11 @@ function toPinyin(self) {
 		'i2': 'í',
 		'i3': 'ǐ',
 		'i4': 'ì',
+		
+		'e1': 'ē',
+		'e2': 'é',
+		'e3': 'ĕ',
+		'e4': 'è'
 	}
 	
 	let string = self.value;

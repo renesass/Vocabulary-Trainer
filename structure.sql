@@ -1,160 +1,123 @@
--- phpMyAdmin SQL Dump
--- version 4.7.2
--- https://www.phpmyadmin.net/
+-- MariaDB dump 10.19  Distrib 10.5.15-MariaDB, for debian-linux-gnu (x86_64)
 --
--- Host: localhost
--- Erstellungszeit: 26. Feb 2019 um 17:32
--- Server-Version: 10.1.26-MariaDB
--- PHP-Version: 7.1.8
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
-SET time_zone = "+00:00";
-
+-- Host: localhost    Database: vocabulary_trainer
+-- ------------------------------------------------------
+-- Server version	10.5.15-MariaDB-0+deb11u1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Datenbank: `vocabulary_trainer`
+-- Table structure for table `languages`
 --
 
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `languages`
---
-
+DROP TABLE IF EXISTS `languages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `languages` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `main` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
+  `main` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Tabellenstruktur für Tabelle `lessons`
+-- Dumping data for table `languages`
 --
 
+LOCK TABLES `languages` WRITE;
+/*!40000 ALTER TABLE `languages` DISABLE KEYS */;
+INSERT INTO `languages` VALUES (1,'Chinesisch',1),(2,'Englisch',0);
+/*!40000 ALTER TABLE `languages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `lessons`
+--
+
+DROP TABLE IF EXISTS `lessons`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `lessons` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `language_id` int(11) NOT NULL,
   `name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `created` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `created` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `language_id` (`language_id`),
+  CONSTRAINT `lessons_ibfk_1` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `users`
+-- Table structure for table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `mail` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(128) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `password` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Daten für Tabelle `users`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `mail`, `password`) VALUES
-(1, 'mail@renesass.de', '$2b$10$NxRNhvALmSnZ0IUHE7HDeOHfs4tblg1nhZd7Xpkpb9wvu265rTvs6');
-
--- --------------------------------------------------------
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'mail@renesass.de','');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Tabellenstruktur für Tabelle `vocabularies`
+-- Table structure for table `vocabularies`
 --
 
+DROP TABLE IF EXISTS `vocabularies`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `vocabularies` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lesson_id` int(11) NOT NULL,
   `foreign_word` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `pronunciation` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `native_word` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `example_sentence` text COLLATE utf8_unicode_ci NOT NULL,
+  `additional_info` text COLLATE utf8_unicode_ci NOT NULL,
   `foreign_to_native_status` int(11) NOT NULL,
   `foreign_to_native_mark` int(11) NOT NULL,
   `native_to_foreign_status` int(11) NOT NULL,
-  `native_to_foreign_mark` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `native_to_foreign_mark` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `vocabularies_ibfk_1` (`lesson_id`),
+  CONSTRAINT `vocabularies_ibfk_1` FOREIGN KEY (`lesson_id`) REFERENCES `lessons` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=621 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Indizes der exportierten Tabellen
---
 
---
--- Indizes für die Tabelle `languages`
---
-ALTER TABLE `languages`
-  ADD PRIMARY KEY (`id`);
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
---
--- Indizes für die Tabelle `lessons`
---
-ALTER TABLE `lessons`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `language_id` (`language_id`);
-
---
--- Indizes für die Tabelle `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indizes für die Tabelle `vocabularies`
---
-ALTER TABLE `vocabularies`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `vocabularies_ibfk_1` (`lesson_id`);
-
---
--- AUTO_INCREMENT für exportierte Tabellen
---
-
---
--- AUTO_INCREMENT für Tabelle `languages`
---
-ALTER TABLE `languages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT für Tabelle `lessons`
---
-ALTER TABLE `lessons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT für Tabelle `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT für Tabelle `vocabularies`
---
-ALTER TABLE `vocabularies`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- Constraints der exportierten Tabellen
---
-
---
--- Constraints der Tabelle `lessons`
---
-ALTER TABLE `lessons`
-  ADD CONSTRAINT `lessons_ibfk_1` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`) ON DELETE CASCADE;
-
---
--- Constraints der Tabelle `vocabularies`
---
-ALTER TABLE `vocabularies`
-  ADD CONSTRAINT `vocabularies_ibfk_1` FOREIGN KEY (`lesson_id`) REFERENCES `lessons` (`id`) ON DELETE CASCADE;
-COMMIT;
-
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2022-10-25 11:45:24

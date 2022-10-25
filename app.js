@@ -34,46 +34,48 @@ app.locals.navigationPoints = {
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+
+var bodyParser = require('body-parser');
+app.use(express.urlencoded({ extended: false, parameterLimit: 1000000000 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
 	cookieName: 'session',
 	secret: 'ase8flLSe39slPes',
-	duration: 30 * 60 * 1000,
-	activeDuration: 5 * 60 * 1000,
+	duration: 120 * 60 * 1000, // 120 mins
+	activeDuration: 120 * 60 * 1000, // 120 mins
 	httpOnly: true,
 	secure: true,
 	ephemeral: true
 }));
 
 // set root for navigation points
-app.use(function(req, res, next) {
-    res.locals.root = '/' + req.originalUrl.split('/')[1];
-    next();
+app.use(function (req, res, next) {
+	res.locals.root = '/' + req.originalUrl.split('/')[1];
+	next();
 });
 
 // save selected language
-app.use(function(req, res, next) {	
-	Language.findMain(function(error, language) {
+app.use(function (req, res, next) {
+	Language.findMain(function (error, language) {
 		if (language == null) {
 			if (res.locals.root != "/languages" && res.locals.root != "/login" && res.locals.root != "/logout") {
-				req.session.flash = { 'type': 'error', 'message': 'Bitte wähle eine aktive Sprache aus.'}
+				req.session.flash = { 'type': 'error', 'message': 'Bitte wähle eine aktive Sprache aus.' }
 				return res.redirect("/languages")
 			}
 		} else {
 			res.locals.selectedLanguage = language;
 		}
-		
+
 		next();
 	});
 });
 
 // flash
-app.use(function(req, res, next) {
-    res.locals.flash = req.session.flash;
-    delete req.session.flash;
-    next();
+app.use(function (req, res, next) {
+	res.locals.flash = req.session.flash;
+	delete req.session.flash;
+	next();
 });
 
 // if the user is not logged in redirect to login
@@ -94,12 +96,12 @@ app.use('/vocabularies', requireLogin, vocabulariesRouter);
 app.use('/learn', requireLogin, learnRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
 	next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
 	// set locals, only providing error in development
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};

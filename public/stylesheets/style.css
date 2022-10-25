@@ -63,6 +63,10 @@ hr {
 	padding-right: 0px !important;
 }
 
+.small-padding-bottom {
+	padding-bottom: 6px !important;
+}
+
 .clear {
 	clear: both;
 }
@@ -116,6 +120,10 @@ button, a.button {
 button.small, a.button.small {
 	padding: 6px;
 	font-size: 12px;
+}
+
+button.remove-button {
+	padding: 3px 6px;
 }
 
 a.button {
@@ -204,6 +212,10 @@ tr {
 td, th {
 	padding: 8px;
 	white-space: nowrap;
+}
+
+td.full-width {
+	width: 100%;
 }
 
 td.no-padding, th.no-padding {
@@ -445,6 +457,24 @@ section.no-bg {
 	box-sizing: border-box;
 }
 
+.further-info {
+	padding: 24px;
+	margin-top: -12px;
+	width: 100%;
+	vertical-align: middle;
+	background: #ffffff;
+	border-radius: 12px;
+	box-shadow: 1px 1px 5px 3px rgba(0, 0, 0, 0.05);
+	border: 1px solid #ddd;
+	font-size: 14px;
+	position: relative;
+	box-sizing: border-box;
+}
+
+.further-info-seperator {
+	height: 15px;
+}
+
 .flash-card-seperator {
 	float: left;
 	width: 2%;
@@ -462,14 +492,14 @@ section.no-bg {
 	display: block;
 }
 
-.flash-card input.solution {
+.solution.translation-solution, .solution.pronunciation-solution {
 	height: 15% !important;
 	font-size: 10px;
 	padding-top: 0px;
 	display: none;
 }
 
-.flash-card input.solution.show {
+.solution.translation-solution.show, .solution.pronunciation-solution.show {
 	display: block;
 }
 
@@ -500,3 +530,12 @@ section.no-bg {
 .flash-cards-container.native-foreign.without-pronunciation .flash-card.second input.editable { height: 100%; }
 .flash-cards-container.native-foreign.without-pronunciation .flash-card.second input.solution.first { bottom: 25%; }
 .flash-cards-container.native-foreign.without-pronunciation .flash-card.second input.solution.second { display: none; }
+
+
+.edit-link {
+	width: 100%;
+	text-align: center;
+	display: inline-block;
+	margin-top: 12px;
+	font-size: 10px;
+}

@@ -29,6 +29,7 @@ block content
 					input(value=vocabulary.native, disabled="disabled").solution.translation-solution
 				
 				div.clear
+				
 					
 		else
 			div.flash-cards-container.native-foreign(class=showPronunciation ? "" : "without-pronunciation")
@@ -47,6 +48,24 @@ block content
 					input(value=vocabulary.pronunciation, disabled="disabled").solution.pronunciation-solution.second
 				
 				div.clear
+				
+		if vocabulary.exampleSentence != "" || vocabulary.additionalInfo != ""
+			div.flash-cards-container.solution.translation-solution
+				div.further-info
+					
+					if vocabulary.exampleSentence != ""
+						div Example sentence:
+						div #{vocabulary.exampleSentence}
+					
+					if vocabulary.additionalInfo != "" && vocabulary.exampleSentence != ""
+						div.further-info-seperator
+					
+					if vocabulary.additionalInfo != ""
+						div Additional information:
+						div #{vocabulary.additionalInfo}
+			
+				div.clear
+			
 		
 		form(method="post", action="/learn/run/next")
 			div.learn-actions-container 
@@ -61,6 +80,8 @@ block content
 						div.action.toggle-mark.active
 					else 
 						div.action.toggle-mark
+		
+		a.edit-link(href="/lessons/edit/" + vocabulary.lesson_id + "#" + vocabulary.id) edit
 					
 	script(src="https://code.jquery.com/jquery-3.3.1.min.js")
 	script(src="../javascripts/pronunciation_transformation.js")

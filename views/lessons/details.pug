@@ -22,7 +22,7 @@ block content
 			
 				if lesson
 					for vocabulary in lesson.vocabularies
-						tr
+						tr.basic-info
 							td.no-padding
 								input(name="id[]", type="hidden", value=vocabulary.id) 
 								input(name="foreign[]", value=vocabulary.foreign) 
@@ -31,7 +31,14 @@ block content
 							td.no-padding
 								input(name="native[]", value=vocabulary.native) 
 							td.no-padding
-								button.remove-row.small-margin-left x
+								button.remove-row.small-margin-left.remove-button(type="button") x
+								
+						tr
+							td.no-padding(colspan="4")
+								input(name="exampleSentence[]", placeholder="Example sentence", value=vocabulary.exampleSentence) 
+						tr
+							td.no-padding.small-padding-bottom(colspan="4")
+								input(name="additionalInfo[]", placeholder="Additional information", value=vocabulary.additionalInfo) 
 			
 			div.row
 				a.add-row Zeile hinzufügen

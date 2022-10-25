@@ -66,7 +66,7 @@ router.post('/run/next', function(req, res, next) {
 	Vocabulary.findOneById(currentVocabularyId, function(error, vocabulary) {
 		if (error) throw new Error();
 		
-		if (run.direction == "foreign-native") vocabulary.foreignNativeStatus = (("set-0" in req.body) ? 0 : 1);
+		if (run.direction == "foreignNative") vocabulary.foreignNativeStatus = (("set-0" in req.body) ? 0 : 1);
 		else vocabulary.nativeForeignStatus = (("set-0" in req.body) ? 0 : 1);
 		
 		vocabulary.save(function(error) {
